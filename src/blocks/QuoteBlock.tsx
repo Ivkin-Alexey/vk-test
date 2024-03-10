@@ -7,8 +7,10 @@ export const QuoteBlock = () => {
     const [quote, setQuote] = useState<string>("");
     const ref = useRef<HTMLTextAreaElement | null>(null)
 
-    async function handleClick() {
-        fetchQuote().then(data => setQuote(data.fact));
+    function handleClick() {
+        fetchQuote()
+            .then(data => setQuote(data))
+            .catch(() => setQuote("не удалось загрузить (произошла ошибка)"));
     }
 
     useEffect(() => {

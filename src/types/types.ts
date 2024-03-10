@@ -1,0 +1,1 @@
+export interface ICash {name: string};

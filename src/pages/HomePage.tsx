@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {IActivePanel} from "../types";
 import {View, Panel} from '@vkontakte/vkui';
 import {AdaptivityProvider, ConfigProvider} from "@vkontakte/vkui";
-import {QuoteBlock} from "../blocks";
+import {QuoteBlock, AgeBlock} from "../blocks";
 
 export const HomePage = () => {
 
@@ -12,6 +12,7 @@ export const HomePage = () => {
         <View activePanel={activePanel}>
             <Panel id="main">
                 <QuoteBlock/>
+                <AgeBlock/>
             </Panel>
         </View>
     );
