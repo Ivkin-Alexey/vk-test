@@ -1,7 +1,23 @@
-import React from 'react';
-import {Group, FormItem, Textarea, PanelHeader, Button, SimpleCell} from "@vkontakte/vkui";
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, FormItem, Group, PanelHeader, SimpleCell, Textarea} from "@vkontakte/vkui";
+import {fetchQuote} from "../api/api";
 
 export const QuoteBlock = () => {
+
+    const [quote, setQuote] = useState<string>("");
+    const ref = useRef<HTMLTextAreaElement | null>(null)
+
+    async function handleClick() {
+        fetchQuote().then(data => setQuote(data.fact));
+    }
+
+    useEffect(() => {
+        if(ref.current) {
+            ref.current?.focus();
+            ref.current.selectionEnd = quote.substring(0, quote.indexOf(" ")).length;
+        }
+    }, [quote])
+
     return (
         <>
             <PanelHeader>
@@ -9,12 +25,12 @@ export const QuoteBlock = () => {
             </PanelHeader>
             <Group>
                 <SimpleCell>
-                    <Button onClick={() => {}} size="l" appearance="accent">
+                    <Button onClick={handleClick} size="l" appearance="accent">
                         Получить цитату
                     </Button>
                 </SimpleCell>
                     <FormItem top="Цитата">
-                        <Textarea placeholder=""/>
+                        <Textarea placeholder="Здесь появится цитата" value={quote} getRef={ref}/>
                     </FormItem>
             </Group>
         </>
