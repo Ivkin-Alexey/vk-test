@@ -1,11 +1,24 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {fetchAge, fetchQuote} from "../api/api";
-import {Button, FormItem, Group, PanelHeader, SimpleCell, Textarea, FormLayoutGroup, Input, Text,} from "@vkontakte/vkui";
+import {
+    Button,
+    FormItem,
+    Group,
+    PanelHeader,
+    SimpleCell,
+    Textarea,
+    FormLayoutGroup,
+    Input,
+    Text,
+} from "@vkontakte/vkui";
 import {memoize} from "../utils/utils";
+import ErrorCell from "../components/ErrorCell";
+import constants from "../constants";
 
 export const AgeBlock = () => {
     const [inputValue, setInputValue] = useState<string>("");
     const [age, setAge] = useState<string | null>(null);
+    const [isError, setIsError] = useState<boolean>(false);
 
     function handleChange(e: any) {
         const {value} = e.target;
@@ -16,14 +29,18 @@ export const AgeBlock = () => {
 
     function handleClick() {
         try {
-            memoizedAge(inputValue).then(age => setAge(age));
+            memoizedAge(inputValue)
+                .then(age => setAge(age))
+                .catch(() => {
+                setIsError(true);
+            })
         } catch (e) {
             console.log(e);
         }
     }
 
     useEffect(() => {
-        if(inputValue !== "") {
+        if (inputValue !== "") {
             const timeOutId = setTimeout(handleClick, 3000);
             return () => clearTimeout(timeOutId);
         }
@@ -40,9 +57,11 @@ export const AgeBlock = () => {
                         Отправить
                     </Button>
                 </SimpleCell>
-                <SimpleCell>
-                    <Text>Возраст: {age}</Text>
-                </SimpleCell>
+                {isError ?
+                    <ErrorCell errorMsg={constants.errors.ageBlock}/>
+                    : <SimpleCell>
+                        <Text>Возраст: {age}</Text>
+                    </SimpleCell>}
             </Group>
         </>
     );

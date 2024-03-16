@@ -1,6 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, FormItem, Group, PanelHeader, SimpleCell, Text, Textarea} from "@vkontakte/vkui";
 import {fetchQuote} from "../api/api";
+import constants from "../constants";
+import ErrorCell from "../components/ErrorCell";
 
 export const QuoteBlock = () => {
 
@@ -10,13 +12,14 @@ export const QuoteBlock = () => {
 
     function handleClick() {
         setIsError(false);
+        setQuote("");
         fetchQuote()
             .then(data => setQuote(data))
             .catch(() => setIsError(true));
     }
 
     useEffect(() => {
-        if(ref.current && quote) {
+        if (ref.current && quote) {
             ref.current?.focus();
             ref.current.selectionEnd = quote.substring(0, quote.indexOf(" ")).length;
         }
@@ -33,12 +36,10 @@ export const QuoteBlock = () => {
                         Получить цитату
                     </Button>
                 </SimpleCell>
-                    <FormItem top="Цитата">
-                        <Textarea placeholder="Здесь появится цитата" value={quote} getRef={ref}/>
-                    </FormItem>
-                {isError && <SimpleCell>
-                    <Text style={{color: "red"}}>Ошибка: цитату не удалось загрузить</Text>
-                </SimpleCell>}
+                <FormItem top="Цитата">
+                    <Textarea placeholder="Здесь появится цитата" value={quote} getRef={ref}/>
+                </FormItem>
+                {isError ? <ErrorCell errorMsg={constants.errors.quoteBlock}/> : null}
             </Group>
         </>
     );
