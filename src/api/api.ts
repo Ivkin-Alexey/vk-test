@@ -2,7 +2,6 @@ export function fetchQuote(): Promise<string> {
     return fetch("https://catfact.ninja/fact")
         .then(r => r.json())
         .then(data => data.fact)
-        .catch(e => console.log(e));
 }
 
 export function fetchAge(name: string): Promise<string> {
