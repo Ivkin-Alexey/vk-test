@@ -1,6 +1,6 @@
 import {ICash} from "../types/types";
 
-export function memoize(fn: (name: string) => Promise<string>) {
+export function memoize(fn: (name: string, ) => Promise<string>) {
     let cache: ICash | any = {};
 
     return async (...args: string[]): Promise<string> => {
@@ -17,3 +17,15 @@ export function memoize(fn: (name: string) => Promise<string>) {
         }
     }
 };
+
+export function validate(name: string) {
+    const result = {isValid: true, msg: ""};
+    if(name === "") {
+        result.isValid = false;
+        result.msg = "Введите значение";
+    } else if (name.replace(/[a-z]/gi, "") !== "") {
+        result.isValid = false;
+        result.msg = "Допустима только латиница";
+    }
+    return result;
+}

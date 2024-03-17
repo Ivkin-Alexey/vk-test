@@ -5,3 +5,7 @@ export interface ICash {
 export interface IErrorCell {
     errorMsg: string
 }
+
+export interface IAgeForm {
+    firstName: string
+}
